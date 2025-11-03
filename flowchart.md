@@ -1,4 +1,4 @@
-# Program Flowchart
+# Program Flowchart (v1.1)
 
 This flowchart illustrates the process of generating the final formatted Excel file, `activity_tracker_formatted.xlsx`.
 
@@ -6,10 +6,10 @@ This flowchart illustrates the process of generating the final formatted Excel f
 [Start]
    |
    v
-[Run `create_excel.py`]
+[Run `create_excel_v1.1.py`]
    |
    +--> [Input: None]
-   |   
+   |
    +--> [Process: Creates a new Excel workbook, adds headers, and a dropdown for "Assigned By"]
    |
    v
@@ -17,7 +17,7 @@ This flowchart illustrates the process of generating the final formatted Excel f
    |
    |
    v
-[Run `update_excel_formatting.py`]
+[Run `update_excel_formatting_v1.1.py`]
    |
    +--> [Input: `activity_tracker.xlsx`]
    |
