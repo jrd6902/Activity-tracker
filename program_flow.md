@@ -1,44 +1,47 @@
-# Detailed Program and Function Flow
+# Detailed Program and Function Flow (v1.1)
 
-This document provides a detailed step-by-step flow of the Python scripts used to generate the final `activity_tracker_formatted_2.xlsx` file.
+This document provides a detailed step-by-step flow of the Python scripts used to generate the final `activity_tracker_formatted.xlsx` file.
 
 ## Step 1: Initial Excel File Creation
 
-**File:** `create_excel.py`
+**File:** `create_excel_v1.1.py`
 
-**Purpose:** To create the initial `activity_tracker.xlsx` file with basic structure and the "Assigned By" dropdown.
+**Purpose:** To create the initial `activity_tracker.xlsx` file with basic structure and the "Assigned By" dropdown. The script has been refactored to use variables for better maintainability.
 
 **Execution Flow:**
 
-1.  **`openpyxl.Workbook()`**: A new, empty Excel workbook is created in memory.
-2.  **`wb.active`**: The active worksheet is selected.
-3.  **`ws.title = "Activities"`**: The worksheet is renamed to "Activities".
-4.  **`ws.append(headers)`**: The header row with ["Serial No", "Start Date", "End Date", "Activity", "Assigned By"] is added to the worksheet.
-5.  **`assignee_list = [...]`**: A Python list `assignee_list` is created containing the names for the dropdown.
-6.  **`DataValidation(...)`**: A `DataValidation` object is created with the `assignee_list` as a list-based validation rule.
-7.  **`ws.add_data_validation(dv)`**: The data validation rule is attached to the worksheet.
-8.  **`dv.add("E2:E1048576")`**: The data validation is applied to all cells in the "Assigned By" column (column E) from row 2 to the end of the sheet.
-9.  **`ws[f'{col}{i}'].number_format = "YYYY-MM-DD"`**: The "Start Date" and "End Date" columns are formatted to accept dates in the "YYYY-MM-DD" format.
-10. **`wb.save("activity_tracker.xlsx")`**: The workbook is saved to the disk as `activity_tracker.xlsx`.
+1.  **Configuration Variables**: Global variables like `OUTPUT_FILENAME`, `WORKSHEET_TITLE`, `HEADERS`, `ASSIGNEE_LIST`, etc., are defined at the top of the script.
+2.  **`create_base_excel_file()` function**:
+    -   **`openpyxl.Workbook()`**: A new, empty Excel workbook is created.
+    -   The worksheet is created and titled using the `WORKSHEET_TITLE` variable.
+    -   Headers are appended from the `HEADERS` list.
+    -   A `DataValidation` object is created for the "Assigned By" dropdown using the `ASSIGNEE_LIST`.
+    -   The data validation is applied to the "Assigned By" column.
+    -   The "Start Date" and "End Date" columns are formatted using the `DATE_FORMAT` variable.
+    -   The workbook is saved using the `OUTPUT_FILENAME` variable.
+3.  **`if __name__ == "__main__":`**: This block ensures that the `create_base_excel_file()` function is called only when the script is executed directly.
 
 ---
 
 ## Step 2: Applying Advanced Formatting
 
-**File:** `update_excel_formatting.py`
+**File:** `update_excel_formatting_v1.1.py`
 
-**Purpose:** To read the `activity_tracker.xlsx` file and apply all the advanced conditional formatting and data validation rules, saving the result as `activity_tracker_formatted_2.xlsx`.
+**Purpose:** To read the `activity_tracker.xlsx` file and apply all the advanced conditional formatting and data validation rules. This script has been refactored for better structure and maintainability.
 
 **Execution Flow:**
 
-1.  **`openpyxl.load_workbook("activity_tracker.xlsx")`**: The `activity_tracker.xlsx` file is loaded into memory.
-2.  **`PatternFill(...)` and `Color(...)`**: Several `PatternFill` objects are created to define the background colors (green, red, yellow, and theme-based accent colors) for the conditional formatting.
-3.  **Column Letter Discovery Loop (`for cell in ws[1]...`)**: The script iterates through the header row of the worksheet to find the column letters for "Status", "Start Date", "End Date", and "Assigned By". This makes the script more robust if the column order changes.
-4.  **`ws.conditional_formatting.add(...)` for "Status" column**:
-    -   Three `FormulaRule` objects are created and added to the worksheet's conditional formatting rules.
-    -   These rules apply the green, red, and yellow fills to the "Status" column cells based on whether their value is "COMPLETE", "INCOMPLETE", or "WIP".
-5.  **`DataValidation(...)` for "Status" column**: A `DataValidation` object is created and applied to the "Status" column to create a dropdown with the "COMPLETE", "INCOMPLETE", and "WIP" options.
-6.  **`ws.conditional_formatting.add(...)` for other columns**:
-    -   Three more `FormulaRule` objects are created and added.
-    -   These rules apply the theme-based accent colors to the "Start Date", "End Date", and "Assigned By" columns if the cells in those columns are not empty (`NOT(ISBLANK(...))`).
-7.  **`wb.save("activity_tracker_formatted_2.xlsx")`**: The modified workbook is saved to the disk as `activity_tracker_formatted_2.xlsx`.
+1.  **Configuration Variables**: Global variables for `INPUT_FILENAME`, `OUTPUT_FILENAME`, and `STATUS_OPTIONS` are defined.
+2.  **Color Definitions**: `PatternFill` objects are created for all the colors used in conditional formatting.
+3.  **`apply_formatting(ws)` function**:
+    -   A dictionary `column_letters` is created to map column names to their letters for easy access.
+    -   **Status Column Formatting**:
+        -   Conditional formatting rules are added for each option in `STATUS_OPTIONS` ("COMPLETE", "INCOMPLETE", "WIP").
+        -   A `DataValidation` dropdown is created for the "Status" column using the `STATUS_OPTIONS`.
+    -   **Other Column Formatting**: Conditional formatting is applied to the "Start Date", "End Date", and "Assigned By" columns to highlight cells that are not empty.
+4.  **`main()` function**:
+    -   This function wraps the main logic of the script.
+    -   It uses a `try...except FileNotFoundError` block to handle errors if the input file is not found.
+    -   It calls `apply_formatting()` to apply the formatting to the worksheet.
+    -   It saves the final workbook using the `OUTPUT_FILENAME` variable.
+5.  **`if __name__ == "__main__":`**: This block calls the `main()` function when the script is executed.

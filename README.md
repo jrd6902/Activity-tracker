@@ -1,6 +1,6 @@
-# Excel Activity Tracker Generator
+# Excel Activity Tracker Generator v1.1
 
-This project contains a set of Python scripts to generate a formatted Excel file for tracking activities. The process involves two main steps to create the final, feature-rich spreadsheet.
+This project contains a set of Python scripts to generate a formatted Excel file for tracking activities. This version (v1.1) has been refactored for better maintainability and clarity.
 
 ## Features
 
@@ -18,18 +18,18 @@ The process involves running two scripts in sequence:
 
 ### Step 1: Create the Base Excel File
 
-First, run `create_excel.py` to generate the initial `activity_tracker.xlsx` file. This file will have the basic headers and the "Assigned By" dropdown.
+First, run `create_excel_v1.1.py` to generate the initial `activity_tracker.xlsx` file.
 
 ```bash
-python create_excel.py
+python create_excel_v1.1.py
 ```
 
 ### Step 2: Apply Advanced Formatting
 
-Next, run `update_excel_formatting.py`. This script will load the `activity_tracker.xlsx` file and apply all the conditional formatting and the "Status" dropdown, saving the result as `activity_tracker_formatted_2.xlsx`.
+Next, run `update_excel_formatting_v1.1.py`. This script will load the `activity_tracker.xlsx` file and apply all the conditional formatting and the "Status" dropdown, saving the result as `activity_tracker_formatted.xlsx`.
 
 ```bash
-python update_excel_formatting.py
+python update_excel_formatting_v1.1.py
 ```
 
 ## Prerequisites
@@ -42,9 +42,10 @@ You can install the required library using pip:
 pip install openpyxl
 ```
 
-## Project Files
+## Project Files (v1.1)
 
--   `create_excel.py`: Script to create the initial Excel file.
--   `update_excel_formatting.py`: Script to apply advanced formatting.
--   `flowchart.md`: A textual flowchart of the program flow.
+-   `create_excel_v1.1.py`: Refactored script to create the initial Excel file.
+-   `update_excel_formatting_v1.1.py`: Refactored script to apply advanced formatting.
+-   `README.md`: This file.
+-   `flowchart.md`: A flowchart of the program flow.
 -   `program_flow.md`: A detailed explanation of the scripts and their functions.
